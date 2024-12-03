@@ -41,7 +41,7 @@ async def handle_youtube_link(message: types.Message):
 
     try:
         ydl_opts = {
-            'format': 'best',
+            'format': 'best[height<=720]',
             'outtmpl': os.path.join(download_dir, 'video.mp4'),
             'noplaylist': True,
             'quiet': False,
