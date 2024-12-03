@@ -46,7 +46,7 @@ async def handle_youtube_link(message: types.Message):
             'noplaylist': True,
             'quiet': False,
             'restrictfilenames': True,
-            'cookies': 'cookies.txt'
+            
         }
 
         ydl_opts2 = {
@@ -55,7 +55,7 @@ async def handle_youtube_link(message: types.Message):
             'noplaylist': True,
             'quiet': False,
             'restrictfilenames': True,
-            'cookies': 'cookies.txt'
+            
         }
 
         with ytdlp.YoutubeDL(ydl_opts) as ydl:
