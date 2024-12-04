@@ -45,7 +45,7 @@ async def handle_youtube_link(message: types.Message):
             'outtmpl': os.path.join(download_dir, 'video.mp4'),
             'noplaylist': True,
             'quiet': False,
-            'restrictfilenames': True,
+            'restrictfilenames': True
             
         }
 
@@ -54,7 +54,7 @@ async def handle_youtube_link(message: types.Message):
             'outtmpl': os.path.join(download_dir, 'video.mp3'),
             'noplaylist': True,
             'quiet': False,
-            'restrictfilenames': True,
+            'restrictfilenames': True
             
         }
 
