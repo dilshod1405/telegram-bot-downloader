@@ -18,7 +18,7 @@ async def start_bot():
     await dp.start_polling(bot)
 
 async def set_webhook():
-    webhook_url = "https://telegram-bot-downloader.vercel.app/"
+    webhook_url = "https://telegram-bot-downloader.vercel.app/webhook"
     await bot.set_webhook(webhook_url)
 
 # Vercel requires an 'app' or 'handler' function. Let's define 'app'.
