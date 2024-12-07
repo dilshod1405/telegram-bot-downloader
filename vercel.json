@@ -3,6 +3,9 @@
   "builds": [
     { "src": "bot.py", "use": "@vercel/python" }
   ],
+  "env": {
+    "PYTHON_VERSION": "3.8" 
+  },
   "routes": [
     { "src": "/(.*)", "dest": "bot.py" }
   ]
