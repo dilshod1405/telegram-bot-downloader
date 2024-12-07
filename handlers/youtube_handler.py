@@ -4,7 +4,7 @@ from aiogram import types, Router, F
 from aiogram.types import InputFile
 
 # Define the download directory
-download_dir = '/tmp/downloads'  # Vercel is a read-only file system, this should be avoided.
+download_dir = '/downloads'  # Vercel is a read-only file system, this should be avoided.
 
 # Check if the directory is writable
 try:
@@ -37,7 +37,7 @@ async def handle_youtube_link(message: types.Message):
 
     try:
         ydl_opts = {
-            'format': 'best[height<=720]',
+            'format': 'best',
             'outtmpl': os.path.join(download_dir, 'video.mp4'),
             'noplaylist': True,
             'quiet': False,
