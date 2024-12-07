@@ -10,12 +10,12 @@ logging.basicConfig(level=logging.INFO)
 
 # Initialize the bot and dispatcher
 bot = Bot(token=TELEGRAM_BOT_TOKEN)
-dp = Dispatcher()
+app = Dispatcher()
 
 # Define the main function for the bot
 async def start_bot():
     # Start polling (to handle Telegram updates)
-    await dp.start_polling(bot)
+    await app.start_polling(bot)
 
 async def set_webhook():
     webhook_url = "https://telegram-bot-downloader.vercel.app/"
@@ -32,15 +32,15 @@ async def app(request):
 
 # Vercel uses 'handler' or 'app' to manage serverless function behavior.
 # We need to make sure Vercel can find 'handler' or 'app'
-handler = app
+
 
 async def main():
     # Register handlers with the dispatcher
-    dp.include_router(start_handler.router)
-    dp.include_router(youtube_handler.router)
-    dp.include_router(instagram_handler.router)
-    dp.include_router(facebook_handler.router)
-    dp.include_router(error_handler.router)
+    app.include_router(start_handler.router)
+    app.include_router(youtube_handler.router)
+    app.include_router(instagram_handler.router)
+    app.include_router(facebook_handler.router)
+    app.include_router(error_handler.router)
 
     # Start the bot in the background
     loop = asyncio.get_event_loop()
