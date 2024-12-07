@@ -14,7 +14,7 @@ dp = Dispatcher()
 
 # Set webhook for the bot
 async def set_webhook():
-    webhook_url = "https://telegram-bot-downloader.vercel.app/"  # Replace with your Vercel URL
+    webhook_url = "https://telegram-bot-downloader.vercel.app/webhook"
     await bot.set_webhook(webhook_url)
 
 # HTTP route to handle incoming webhook requests
