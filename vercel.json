@@ -7,7 +7,7 @@
     "PYTHON_VERSION": "3.12"
   },
   "routes": [
-    { "src": "/(.*)", "dest": "bot.py" }
+    { "src": "/webhook", "dest": "/bot.py" }
   ],
   "builds": [
     { "src": "setup.sh", "use": "@vercel/python" }
