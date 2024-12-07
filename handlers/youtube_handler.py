@@ -4,7 +4,7 @@ from aiogram import types, Router, F
 from aiogram.types import InputFile
 
 # Define the download directory
-download_dir = os.path.join(os.getcwd(), 'downloads')
+download_dir = os.path.join(os.getcwd(), '/tmp/downloads')
 os.makedirs(download_dir, exist_ok=True)
 
 # Store the file_id once the video is uploaded (this can be stored in a database or file)
