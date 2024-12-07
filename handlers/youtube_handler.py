@@ -4,7 +4,7 @@ from aiogram import types, Router, F
 from aiogram.types import InputFile
 
 # Define the download directory
-download_dir = '/var/task/downloads'  # Vercel is a read-only file system, this should be avoided.
+download_dir = '/tmp/downloads'  # Vercel is a read-only file system, this should be avoided.
 
 # Check if the directory is writable
 try:
@@ -28,16 +28,6 @@ class VideoFile(InputFile):
     def read(self, bot):
         with open(self.filename, 'rb') as f:
             return f.read()
-
-
-@router.message(F.text.regexp(r'https://www.youtube.com/'))
-async def check_youtube_link(message: types.Message):
-    url = message.text
-    await message.reply("Kutib turing, havola orqali video va audio yuklanmoqda ... ⏳")
-    if url.startswith('https://www.youtube.com/'):
-        await message.reply("Sahifaning havolasini yuboryapsiz. Videoning havolasini yuboring ❗️")
-    else:
-        pass
 
 @router.message(F.text.regexp(r'https://youtu.be/'))    
 async def handle_youtube_link(message: types.Message):
