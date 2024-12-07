@@ -11,11 +11,11 @@ logging.basicConfig(level=logging.INFO)
 bot = Bot(token=TELEGRAM_BOT_TOKEN)
 dp = Dispatcher()
 
-dp.include_router(start_router)
-dp.include_router(youtube_router)
-dp.include_router(instagram_router)
-dp.include_router(facebook_router)
-dp.include_router(error_router)
+dp.include_router(start_handler)
+dp.include_router(youtube_handler)
+dp.include_router(instagram_handler)
+dp.include_router(facebook_handler)
+dp.include_router(error_handler)
 
 async def on_start(request):
     return web.Response(text="Bot is running")
