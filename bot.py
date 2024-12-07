@@ -3,6 +3,7 @@ import asyncio
 from aiogram import Bot, Dispatcher
 from config import TELEGRAM_BOT_TOKEN
 from handlers import start_handler, youtube_handler, instagram_handler, facebook_handler, error_handler
+from aiohttp import web
 
 # Set up logging
 logging.basicConfig(level=logging.INFO)
@@ -21,7 +22,12 @@ async def main():
     # dp.include_router(tiktok_handler.router)
 
     # Start the bot
-    await dp.start_polling(bot)
+    # await dp.start_polling(bot)
+    app = web.Application()
+    app.router.add_get("/", handle)
+    loop = asyncio.get_event_loop()
+    loop.create_task(start_bot())
+    web.run_app(app, port=8000)
 
 if __name__ == "__main__":
     asyncio.run(main())
