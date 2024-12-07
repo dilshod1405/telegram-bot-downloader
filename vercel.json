@@ -8,8 +8,5 @@
   },
   "routes": [
     { "src": "/webhook", "dest": "/bot.py" }
-  ],
-  "builds": [
-    { "src": "setup.sh", "use": "@vercel/python" }
   ]
 }
