@@ -41,7 +41,6 @@ async def main():
     dp.include_router(instagram_handler)
     dp.include_router(facebook_handler)
     dp.include_router(error_handler)
-    await bot.set_webhook("https://telegram-bot-downloader.vercel.app/")
     # Start the bot with polling
     loop = asyncio.get_event_loop()
     loop.create_task(start_bot())
