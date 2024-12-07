@@ -12,6 +12,10 @@ logging.basicConfig(level=logging.INFO)
 bot = Bot(token=TELEGRAM_BOT_TOKEN)
 dp = Dispatcher()
 
+async def start_bot():
+    # Start polling
+    await dp.start_polling(bot)
+
 async def main():
     # Register routers with the dispatcher
     dp.include_router(start_handler.router)
