@@ -12,42 +12,46 @@ logging.basicConfig(level=logging.INFO)
 bot = Bot(token=TELEGRAM_BOT_TOKEN)
 dp = Dispatcher()
 
-# Define the main function for the bot (without web)
+# Define the main function for the bot
 async def start_bot():
-    # Start polling (for handling Telegram updates)
+    # Start polling (to handle Telegram updates)
     await dp.start_polling(bot)
 
 async def set_webhook():
-    webhook_url = "https://telegram-bot-downloader.vercel.app/webhook"
+    webhook_url = "https://telegram-bot-downloader.vercel.app/"
     await bot.set_webhook(webhook_url)
 
+# Vercel requires an 'app' or 'handler' function. Let's define 'app'.
 async def handle_request(request):
-    # You can handle the HTTP requests here if necessary
     return web.Response(text="Bot is up and running")
 
-# This function is required for serverless functions to work in Vercel
+# This function will handle the HTTP request. It's required for Vercel.
 async def app(request):
-    # For demonstration, simply handle the request and show a response
-    return await handle_request(request)
+    # Simple HTTP response when a request hits the serverless function
+    return web.Response(text="Bot is up and running!")
+
+# Vercel uses 'handler' or 'app' to manage serverless function behavior.
+# We need to make sure Vercel can find 'handler' or 'app'
+handler = app
 
 async def main():
-    # Register routers with the dispatcher
+    # Register handlers with the dispatcher
     dp.include_router(start_handler.router)
     dp.include_router(youtube_handler.router)
     dp.include_router(instagram_handler.router)
     dp.include_router(facebook_handler.router)
     dp.include_router(error_handler.router)
 
-    # Start the bot (you can also run it in a background task)
-    app = web.Application()
-    app.router.add_get("/", app)  # Optional: Root endpoint for testing
+    # Start the bot in the background
     loop = asyncio.get_event_loop()
     loop.create_task(start_bot())
+
+    # Set up the web app to listen for incoming HTTP requests
+    app = web.Application()
+    app.router.add_get("/", app)  # Optional: root endpoint to check bot status
     web.run_app(app, port=8000)
 
+# This block is needed for running the bot locally or as a background task.
 if __name__ == "__main__":
     asyncio.run(main())
 
-# This is the handler function that Vercel expects
-# It will ensure the function runs properly in the serverless environment
-handler = app
