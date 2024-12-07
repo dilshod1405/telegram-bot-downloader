@@ -12,11 +12,11 @@ bot = Bot(token=TELEGRAM_BOT_TOKEN)
 dp = Dispatcher()
 
 # Register handlers
-dp.message.register(start_handler)
-dp.message.register(youtube_handler)
-dp.message.register(instagram_handler)
-dp.message.register(facebook_handler)
-dp.message.register(error_handler)
+dp.include_router(start_handler)
+dp.include_router(youtube_handler)
+dp.include_router(instagram_handler)
+dp.include_router(facebook_handler)
+dp.include_router(error_handler)
 
 async def on_start(request):
     return web.Response(text="Bot is running")
