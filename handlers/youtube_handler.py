@@ -4,8 +4,14 @@ from aiogram import types, Router, F
 from aiogram.types import InputFile
 
 # Define the download directory
-download_dir = os.path.join(os.getcwd(), '/tmp/downloads')
-os.makedirs(download_dir, exist_ok=True)
+download_dir = '/var/task/downloads'  # Vercel is a read-only file system, this should be avoided.
+
+# Check if the directory is writable
+try:
+    if not os.path.exists(download_dir):
+        os.makedirs(download_dir, exist_ok=True)
+except OSError as e:
+    print(f"Error creating directory: {e}")
 
 # Store the file_id once the video is uploaded (this can be stored in a database or file)
 video_file_ids = {}
