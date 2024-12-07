@@ -12,9 +12,17 @@ logging.basicConfig(level=logging.INFO)
 bot = Bot(token=TELEGRAM_BOT_TOKEN)
 dp = Dispatcher()
 
-async def start_bot():
-    # Start polling
-    await dp.start_polling(bot)
+# Set webhook for the bot
+async def set_webhook():
+    webhook_url = "https://telegram-bot-downloader.vercel.app/"  # Replace with your Vercel URL
+    await bot.set_webhook(webhook_url)
+
+# HTTP route to handle incoming webhook requests
+async def handle(request):
+    json_data = await request.json()  # Get the payload from Telegram
+    update = types.Update(**json_data)
+    await dp.process_update(update)  # Process the update with aiogram
+    return web.Response(text="OK")
 
 async def main():
     # Register routers with the dispatcher
@@ -23,16 +31,16 @@ async def main():
     dp.include_router(instagram_handler.router)
     dp.include_router(facebook_handler.router)
     dp.include_router(error_handler.router)
-    # dp.include_router(tiktok_handler.router)
+    
+    # Set webhook
+    await set_webhook()
 
-    # Start the bot
-    # await dp.start_polling(bot)
+    # Create an aiohttp web application
     app = web.Application()
-    app.router.add_get("/", handle)
-    loop = asyncio.get_event_loop()
-    loop.create_task(start_bot())
+    app.router.add_post("/webhook", handle)  # Handle webhook requests from Telegram
+    
+    # Run the app
     web.run_app(app, port=8000)
 
 if __name__ == "__main__":
     asyncio.run(main())
-    
