@@ -5,6 +5,7 @@ from aiogram.types import Message
 from aiohttp import web
 from config import TELEGRAM_BOT_TOKEN
 from handlers import start_handler, youtube_handler, instagram_handler, facebook_handler, error_handler
+from aiogram.router import Router
 
 logging.basicConfig(level=logging.INFO)
 
