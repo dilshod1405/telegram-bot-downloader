@@ -49,7 +49,8 @@ async def handle_youtube_link(message: types.Message):
             'outtmpl': os.path.join(download_dir, 'video.mp4'),
             'noplaylist': True,
             'quiet': False,
-            'restrictfilenames': True
+            'restrictfilenames': True,
+            'cookiefile': 'youtube_cookies.txt',
         }
 
         ydl_opts2 = {
@@ -57,7 +58,8 @@ async def handle_youtube_link(message: types.Message):
             'outtmpl': os.path.join(download_dir, 'audio.mp3'),
             'noplaylist': True,
             'quiet': False,
-            'restrictfilenames': True
+            'restrictfilenames': True,
+            'cookiefile': 'youtube_cookies.txt',
         }
 
         with ytdlp.YoutubeDL(ydl_opts) as ydl:
