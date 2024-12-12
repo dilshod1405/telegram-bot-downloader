@@ -4,14 +4,12 @@ from aiogram import types, Router, F
 from aiogram.types import InputFile
 
 # Define the download directory
-download_dir = '/downloads'  # Vercel is a read-only file system, this should be avoided.
+download_dir = "downloads"
 
-# Check if the directory is writable
-try:
-    if not os.path.exists(download_dir):
-        os.makedirs(download_dir, exist_ok=True)
-except OSError as e:
-    print(f"Error creating directory: {e}")
+# Ensure the directory exists
+if not os.path.exists(download_dir):
+    os.makedirs(download_dir, exist_ok=True)
+
 
 # Store the file_id once the video is uploaded (this can be stored in a database or file)
 video_file_ids = {}
@@ -29,6 +27,16 @@ class VideoFile(InputFile):
         with open(self.filename, 'rb') as f:
             return f.read()
 
+
+@router.message(F.text.regexp(r'https://www.youtube.com/'))
+async def check_youtube_link(message: types.Message):
+    url = message.text
+    await message.reply("Kutib turing, havola orqali video va audio yuklanmoqda ... ⏳")
+    if url.startswith('https://www.youtube.com/'):
+        await message.reply("Sahifaning havolasini yuboryapsiz. Videoning havolasini yuboring ❗️")
+    else:
+        pass
+
 @router.message(F.text.regexp(r'https://youtu.be/'))    
 async def handle_youtube_link(message: types.Message):
     url = message.text
@@ -41,17 +49,15 @@ async def handle_youtube_link(message: types.Message):
             'outtmpl': os.path.join(download_dir, 'video.mp4'),
             'noplaylist': True,
             'quiet': False,
-            'restrictfilenames': True
-            
+            'restrictfilenames': True,
         }
 
         ydl_opts2 = {
             'format': 'bestaudio/best',
-            'outtmpl': os.path.join(download_dir, 'video.mp3'),
+            'outtmpl': os.path.join(download_dir, 'audio.mp3'),
             'noplaylist': True,
             'quiet': False,
-            'restrictfilenames': True
-            
+            'restrictfilenames': True,
         }
 
         with ytdlp.YoutubeDL(ydl_opts) as ydl:
@@ -59,35 +65,30 @@ async def handle_youtube_link(message: types.Message):
             info_dict = ydl.extract_info(url, download=True)
             filename = ydl.prepare_filename(info_dict)
             print(f"Video filename: {filename}")
+
         
-
-        with ytdlp.YoutubeDL(ydl_opts2) as ydl:
-            print(f"Attempting to download audio from URL: {url}")
-            info_dict = ydl.extract_info(url, download=True)
-            filename = ydl.prepare_filename(info_dict)
-            print(f"Audio filename: {filename}")
             
-            if os.path.exists(filename):
-                    # Check the file size
-                    file_size = os.path.getsize(filename)
-                    if file_size > 50 * 1024 * 1024:
-                        await message.reply("Videoning hajmi 50 MB dan oshmasligi kerak ❗️")
-                    else:
-                        # If the file is small enough, send it to the user
-                        with open(filename, 'rb') as video_file:
-                            video = VideoFile(filename)
-                            await message.reply_video(video, caption="🎥 Marhamat buyurtmangiz tayyor ✅")
-                            await message.reply_audio(video, caption="🎧 Marhamat buyurtmangiz tayyor ✅")
+        if os.path.exists(filename):
+                # Check the file size
+                file_size = os.path.getsize(filename)
+                if file_size > 50 * 1024 * 1024:
+                    await message.reply("Videoning hajmi 50 MB dan oshmasligi kerak ❗️")
+                else:
+                    # If the file is small enough, send it to the user
+                    with open(filename, 'rb') as video_file:
+                        video = VideoFile(filename)
+                        await message.reply_video(video, caption="🎥 Marhamat buyurtmangiz tayyor ✅")
+                        await message.reply_audio(video, caption="🎧 Marhamat buyurtmangiz tayyor ✅")
 
-                    # Clean up by removing the downloaded video
-                    formats = ['.mp4', '.mp3']
-                    for format in formats:
-                        file_path = os.path.join(download_dir, f'video{format}')
-                        if os.path.exists(file_path):
-                            os.remove(file_path)
-            else:
-                print("Error: Video file not found.")
-                await message.reply("Havola bo'yicha video topilmadi.")
+                # Clean up by removing the downloaded video
+                formats = ['.mp4', '.mp3']
+                for format in formats:
+                    file_path = os.path.join(download_dir, f'video{format}')
+                    if os.path.exists(file_path):
+                        os.remove(file_path)
+        else:
+            print("Error: Video file not found.")
+            await message.reply("Havola bo'yicha video topilmadi.")
     except Exception as e:
         print(f"Error during download: {e}")
         await message.reply(f"Xatolik: {e}")
