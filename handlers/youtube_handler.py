@@ -50,6 +50,8 @@ async def handle_youtube_link(message: types.Message):
             'noplaylist': True,
             'quiet': False,
             'restrictfilenames': True,
+            'username': 'dilshod1405',
+            'password': 'dilshod0514'
         }
 
         ydl_opts2 = {
@@ -58,6 +60,8 @@ async def handle_youtube_link(message: types.Message):
             'noplaylist': True,
             'quiet': False,
             'restrictfilenames': True,
+            'username': 'dilshod1405',
+            'password': 'dilshod0514'
         }
 
         with ytdlp.YoutubeDL(ydl_opts) as ydl:
