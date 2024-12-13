@@ -31,14 +31,18 @@ async def instagram_handler(message: types.Message):
 
         # Determine if media is a video or a photo
         media_file_path = f"downloads/{post.shortcode}.mp4"
+        media_file_path_audio = f"downloads/{post.shortcode}.mp3"
         
         # Check size of media file
-        if os.path.getsize(media_file_path) > 50 * 1024 * 1024:
+        if os.path.getsize(media_file_path and media_file_path_audio) > 50 * 1024 * 1024:
             await message.reply("Videoning hajmi 50 MB dan oshmasligi kerak ❗️")
-        elif os.path.exists(media_file_path) and os.path.getsize(media_file_path) <= 50 * 1024 * 1024:
+        elif os.path.exists(media_file_path) and os.path.getsize(media_file_path and media_file_path_audio) <= 50 * 1024 * 1024:
             with open(media_file_path, 'rb') as f:
                 media_file = MediaFile(f.name)
                 await message.reply_video(media_file, caption="🎥 Marhamat buyurtmangiz tayyor ✅")
+            with open(media_file_path_audio, 'rb') as f:
+                media_file = MediaFile(f.name)
+                await message.reply_audio(media_file_audio, caption="Marhamat buyurtmangiz tayyor ✅")
                 
             # Delete the downloaded media file
             formats = ['.mp4', '.jpg', '.png', '.txt']
