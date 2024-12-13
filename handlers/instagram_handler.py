@@ -39,7 +39,7 @@ async def instagram_handler(message: types.Message):
         elif os.path.exists(media_file_path) and os.path.getsize(media_file_path) <= 50 * 1024 * 1024:
             with open(media_file_path, 'rb') as f:
                 media_file = MediaFile(f.name)
-                audio_file = os.path.splitext(media_file_path)[0] + ".mp3"
+                audio_file = f"downloads/{post.shortcode}.mp3"
                 clip = VideoFileClip(media_file_path)
                 clip.audio.write_audiofile(audio_file)
                 await message.reply_video(media_file, caption="🎥 Marhamat buyurtmangiz tayyor ✅")
