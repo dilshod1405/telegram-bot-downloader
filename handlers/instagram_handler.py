@@ -43,7 +43,7 @@ async def instagram_handler(message: types.Message):
                 clip = VideoFileClip(media_file_path)
                 clip.audio.write_audiofile(audio_file)
                 await message.reply_video(media_file, caption="🎥 Marhamat buyurtmangiz tayyor ✅")
-                await message.reply_audio(audio_file)
+                await message.reply_audio(audio=open(audio_file, "rb"))
 
                 
             # Delete the downloaded media file
