@@ -2,7 +2,6 @@ import os
 import instaloader
 from aiogram import types, Router, F
 from aiogram.types import InputFile
-from moviepy.editor import VideoFileClip
 
 router = Router()  # Create router for Instagram handler
 
@@ -32,7 +31,6 @@ async def instagram_handler(message: types.Message):
 
         # Determine if media is a video or a photo
         media_file_path = f"downloads/{post.shortcode}.mp4"
-        audio_file_path = f"downloads/{post.shortcode}.mp3"
         
         # Check size of media file
         if os.path.getsize(media_file_path) > 50 * 1024 * 1024:
@@ -42,14 +40,9 @@ async def instagram_handler(message: types.Message):
                 media_file = MediaFile(f.name)
                 await message.reply_video(media_file, caption="🎥 Marhamat buyurtmangiz tayyor ✅")
                 
-            with open(audio_file_path, 'rb') as f:
-                audio_file = MediaFile(audio_file_path)
-                clip = VideoFileClip(media_file_path)
-                clip.audio.write_audiofile(audio_file)
-                await message.reply_audio(audio=open(audio_file, "rb"))
                 
             # Delete the downloaded media file
-            formats = ['.mp4', '.jpg', '.png', '.txt', '.mp3']
+            formats = ['.mp4', '.jpg', '.png', '.txt']
             for format in formats:
                 file_path = f"downloads/{post.shortcode}{format}"
                 if os.path.exists(file_path):
