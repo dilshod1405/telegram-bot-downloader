@@ -40,12 +40,13 @@ async def instagram_handler(message: types.Message):
         elif os.path.exists(media_file_path) and os.path.getsize(media_file_path) <= 50 * 1024 * 1024:
             with open(media_file_path, 'rb') as f:
                 media_file = MediaFile(f.name)
-                audio_file = InputFile(audio_file_path)
+                await message.reply_video(media_file, caption="🎥 Marhamat buyurtmangiz tayyor ✅")
+                
+            with open(audio_file_path, 'rb') as f:
+                audio_file = MediaFile(audio_file_path)
                 clip = VideoFileClip(media_file_path)
                 clip.audio.write_audiofile(audio_file)
-                await message.reply_video(media_file, caption="🎥 Marhamat buyurtmangiz tayyor ✅")
                 await message.reply_audio(audio=open(audio_file, "rb"))
-
                 
             # Delete the downloaded media file
             formats = ['.mp4', '.jpg', '.png', '.txt', '.mp3']
